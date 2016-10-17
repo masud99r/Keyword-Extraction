@@ -1,0 +1,30 @@
+Portal:Mathematics
+From Wikipedia, the free encyclopedia
+Topics Culture Geography Health History Mathematics Nature People Philosophy Religion Society Technology
+edit  
+The Mathematics Portal
+Pythagoras
+Pythagoras
+Mathematics is the study of numbers, quantity, space, structure, and change. Mathematics is used throughout the world as an essential tool in many fields, including natural science, engineering, medicine, and the social sciences. Applied mathematics, the branch of mathematics concerned with application of mathematical knowledge to other fields, inspires and makes use of new mathematical discoveries and sometimes leads to the development of entirely new mathematical disciplines, such as statistics and game theory. Mathematicians also engage in pure mathematics, or mathematics for its own sake, without having any application in mind. There is no clear line separating pure and applied mathematics, and practical applications for what began as pure mathematics are often discovered.
+More about Mathematics...
+Selected article | Selected picture | Did you know... | Topics in mathematics
+Categories | WikiProjects | Things you can do | Index | Related portals
+There are approximately 31,444 mathematics articles in Wikipedia.
+View new selections below (purge)
+edit  
+Selected article
+
+Criticalline.png
+The real part (red) and imaginary part (blue) of the critical line Re(s) = 1/2 of the Riemann zeta-function.
+Image credit: User:Army1987
+The Riemann hypothesis, first formulated by Bernhard Riemann in 1859, is one of the most famous unsolved problems. It has been an open question for well over a century, despite attracting concentrated efforts from many outstanding mathematicians.
+The Riemann hypothesis is a conjecture about the distribution of the zeros of the Riemann zeta-function ?(s). The Riemann zeta-function is defined for all complex numbers s ? 1. It has zeros at the negative even integers (i.e. at s=-2, s=-4, s=-6, ...). These are called the trivial zeros. The Riemann hypothesis is concerned with the non-trivial zeros, and states that:
+The real part of any non-trivial zero of the Riemann zeta function is ½
+Thus the non-trivial zeros should lie on the so-called critical line ½ + it with t a real number and i the imaginary unit. The Riemann zeta-function along the critical line is sometimes studied in terms of the Z-function, whose real zeros correspond to the zeros of the zeta-function on the critical line.
+The Riemann hypothesis is one of the most important open problems in contemporary mathematics; a $1,000,000 prize has been offered by the Clay Mathematics Institute for a proof. Most mathematicians believe the Riemann hypothesis to be true. (J. E. Littlewood and Atle Selberg have been reported as skeptical. Selberg's skepticism, if any, waned, from his young days. In a 1989 paper, he suggested that an analogue should hold for a much wider class of functions, the Selberg class.)
+View all selected articles	Read More...
+edit  
+Selected picture
+animation of patterns of black pixels moving on a white background
+Credit: User:Protious (animation) & Hyperdeath (original still image)
+Conway's Game of Life is a cellular automaton devised by the British mathematician John Horton Conway in 1970. It is an example of a zero-player game, meaning that its evolution is completely determined by its initial state, requiring no further input as the game progresses. After an initial pattern of filled-in squares ("live cells") is set up in a two-dimensional grid, the fate of each cell (including empty, or "dead", ones) is determined at each step of the game by considering its interaction with its eight nearest neighbors (the cells that are horizontally, vertically, or diagonally adjacent to it) according to the following rules: (1) any live cell with fewer than two live neighbors dies, as if caused by under-population; (2) any live cell with two or three live neighbors lives on to the next generation; (3) any live cell with more than three live neighbors dies, as if by overcrowding; (4) any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction. By repeatedly applying these simple rules, extremely complex patterns can emerge. In this animation, a breeder (in this instance called a puffer train, colored red in the final frame of the animation) leaves guns (green) in its wake, which in turn "fire out" gliders (blue). Many more complex patterns are possible. Conway developed his rules as a simplified model of a hypothetical machine that could build copies of itself, a more complicated version of which was discovered by John von Neumann in the 1940s. Variations on the Game of Life use different rules for cell birth and death, use more than two states (resulting in evolving multicolored patterns), or are played on a different type of grid (e.g., a hexagonal grid or a three-dimensional one). After making its first public appearance in the October 1970 issue of Scientific American, the Game of Life popularized a whole new field of mathematical research called cellular automata, which has been applied to problems in cryptography and error-correction coding, and has even been suggested as the basis for new discrete models of the universe.

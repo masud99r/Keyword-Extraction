@@ -1,0 +1,970 @@
+Finding Similar Projects in GitHub
+using Word Embedding
+Md Masudur Rahman, Yuchi Tian, Baishakhi Ray
+University of Virginia
+{masud,yuchi,rayb}@virginia.edu
+Abstract—Finding similar software projects is useful to endusers as it allows them to compare alternative products that
+might be better suited for their needs. Developers also find
+such search functionality useful for code re-usability, finding
+competitive products, etc. Despite the availability of twenty-eight
+Million open source projects in Github, a general purpose project
+search engine that can find functionally similar projects is still
+rare. In this work, we developed and implemented an approach,
+SAPS, to find similar projects. SAPS adapts word embedding
+techniques to identify hidden similarities between project source
+code and textual artifacts. This technique helps SAPS to find
+similar projects even when they are written in different languages
+for different platforms. Analyzing 9,835 Github projects, we
+confirmed that SAPS can efficiently detect similar projects using
+both automated and human evaluations.
+I. INTRODUCTION
+In the commodity market, end-users usually search through
+several related options before picking up a product. Online
+market places like Amazon, EBay, etc. also recommend related
+products to allow users to make informed decisions. Mobile
+application market such as Google Play Store and iPhone App
+Store also provide such functionalities, although developers
+have to manually tag their applications to available categories
+to facilitate the search. Unfortunately, there is no such common
+facility for searching general purpose software automatically,
+despite the large number and diversity of software options
+available to end-users—GitHub alone hosts more than 28
+million public, open-source projects[11], January 2016 dump
+The ability to find similar software automatically have several
+applications. It helps end-users to pick applications with better
+user experience like GUI, better privacy protection mechanism,
+lower pricing, higher popularity, etc. End-users might also be
+interested in similar applications that run on different platforms.
+The ability to browse through alternative projects and compare
+them is important not only to end-users but also to software
+developers. The developers often search for similar projects
+in large software forges like GitHub, Source Forge, etc. to
+look for competitive products, in assessing re-usability of
+library code [31], improving program comprehension and rapid
+prototyping [19], discovering code plagiarism [28], avoiding
+re-implementation [2], and application recommendations [2].
+Moreover, similar software with independent implementations
+have also been used for automatically finding specification
+violations and logic bugs [18], [15], [3], [22].
+Despite such diverse use cases, automatically finding software providing similar functionalities is a challenging problem.
+First, software with similar functionality are often implemented
+differently—they may be structurally different, use different
+APIs, or can be implemented in different programming languages for different hardware platforms. Thus, traditional clone
+detectors are not very helpful for identifying such high-level
+functional similarity across different programs. To ameliorate
+such issues, some prior research tried to incorporate highlevel code information, e.g., API information, in the searching
+model [30]. Unfortunately, use of only API information might
+pollute the search results by adding unrelated projects to the
+results. For example, same BlueTooth API functions can be
+used by a music application and a file transfer application for
+different reasons. The music application may use the BlueTooth
+API to connect a mobile device with a speaker, while the file
+transfer application may use the same API to transfer files
+between two nearby devices. In such cases, using only API
+information to identify similar software will incorrectly put
+these two unrelated applications together in the same group.
+Moreover, API similarity cannot detect similar applications
+implemented in different languages.
+To make matters worse, the textual descriptions of similar but
+independently developed software are often written by different
+developers using related but subtly different terminology.
+Therefore, a generic key-word-based textual search on the
+project descriptions also does not work well for finding similar
+software. For example, consider Example 1 in Table I. The two
+projects “tesseract” and “pastec” are described as “Tesseract
+Open Source OCR Engine” and “Image recognition open source
+index and search engine” respectively. Although they do not
+share any common words in their descriptions, both are image
+recognition software; A simple text-based search could not
+detect such similarity.
+In this paper, we propose a new search engine, SAPS (Similar
+Aplication Search), for finding similar projects in Github. It
+addresses all the issues discussed above by using information
+both from project source code and textual artifacts. In particular,
+SAPS uses five features of a Github project: description,
+readme, method and class name, API class, and API package
+name. Further, to detect contextual similarities and synonymous
+words, SAPS adopted a word embedding based document
+distance calculation technique named Word Mover’s Distance
+(WMD) by Kusner et al. [20]. All the words of a document
+are embedded by their contextual words using a collection of
+training documents and mapped to a lower dimensional space.
+Then similarities between two documents are computed based
+on the distance traversed by the words of one document to the
+other in the embedded space. Thus, even if two projects do
+not share any words (Example 1 in Table I), WMD can infer
+that they are highly similar if distance between their embeddedwords are small. This allows us to significantly improve the
+similarity detection mechanism for different software projects.
+SAPS uses WMD to calculate similarities between project pair
+for each of the project feature separately. Thus, for each project
+pair, SAPS retrieves five different document distances. Then
+SAPS combines these distances in a linear manner to infer the
+final distance between two documents. This distance is used to
+establish the similarities between two projects. Given a project
+as a query, SAPS finally generates a list of relevant projects,
+the project with least distance tops the search result.
+To evaluate the accuracy of SAPS, we perform empirical
+evaluation using 9835 Github projects written in Java, C, and
+C++. We measure both effectiveness and usefulness of SAPS
+in two settings:
+(i) Automated Evaluation. Search engines are traditionally
+evaluated using user evaluation. Scaling up the user evaluation
+is a challenge, especially in the early stage of tool development
+where one has to experiment with many tunable parameters.
+To overcome that, we design an automated approach that does
+not require large scale user evaluation. Here, we evaluate
+our tool on the Github projects that are also available from
+Google Android Play Store. This helped us to retrieve developer
+annotated [34] category information (e.g., Weather, Media &
+Video) for each project. Note that, these categories are not finegrained. However, it is reasonable to expect that most similar
+Android projects will have same category, though the reverse is
+not true. We evaluate SAPS’s performance against the category
+information, i.e. if the query project has a category c, how
+accurately SAPS retrieves projects with the same category c.
+This step allows us to automatically perform a sanity check
+of the results and tune SAPS’s parameters accordingly. Using
+this setting, we found that both source code (class and method
+names and API class names) and textual artifacts (readme file)
+play important role in SAPS’s performance. Infact, this finding
+motivates us to build a combined model using different source
+of information.
+(ii) User evaluation. We further evaluate SAPS’s effectiveness and usefulness by seeking feedback from 12 users. We
+compare the results with a state-of-the-art general-purpose
+similar software detection tool, CLAN [30]. We find that SAPS
+can detect similar software with 8% to 17% precision and with
+a usefulness score of 88% (measured using NDCG). In both
+cases, SAPS outperformed CLAN at a large margin—from 8
+to 31 percentage points at various settings.
+In summary we made the following contributions:
+I. We design and implement a novel search engine, SAPS,
+that adopts a word embedding based document distance
+calculation algorithm on multiple code and textual artifacts of
+the projects to automatically detect functionally similar projects
+across Github.
+II. We empirically evaluate how effective and useful SAPS
+is in detecting similar Github projects. We find that SAPS
+is capable of detecting similar software even across multiple
+languages (Example 3 of Table I). To our knowledge, this is the
+first project search engine that can search across multi-lingual
+projects.
+III. We empirically evaluate and compare the significance
+of individual features on the search quality.
+IV. We curated a valuable dataset of 9835 Github projects
+by retrieving their descriptions, readme files, method and class
+names, and API usage. Moreover, we associated 6560 Android
+projects with their Google Play Store links and retrieved the
+category information. This is a unique dataset that combine data
+from two different software forges. All our data is available
+at https://github.com/dSar-UVA/SApS.
+The rest of the paper is organized as follows. Section II
+presents the relevant technical background. Next, in Section III,
+we discuss SAPS’s methodology for detecting similar projects
+and Section IV evaluates it. Section V discusses related work.
+Finally, in Section VI, we examine potential threats that may
+affect our findings and we conclude in Section VII.
+II. BACKGROUND
+Our goal is to identify similar projects across Github ecosystem.
+We use word embedding technique to establish similarities
+between the projects. In this section, we present the relevant
+technical background .
+A. Word Embedding
+Similar words should have similar context [13]; this observation leads Word Embedding, a natural language processing
+(NLP) technique, where each word w is represented by a ddimensional vector of real numbers. This d-dimensional vector
+is learned from the context of w where context is formed
+by the preceding and following words of w in a sentence.
+Similar words should have similar context words thus similar
+embedding. There are also embedding of phrase, sentences,
+documents etc. but in this work, we concentrated on word level
+embedding.
+There are many word embedding techniques proposed by
+researcher over the last decades. Landauer and Dumais [21]
+proposed Latent Semantic Analysis (LSA), which project the
+higher dimensional document term co-occurrence frequency
+matrix to a lower dimensional latent space to create word
+vectors. Lebret et al. proposed word embedding [23] where
+they used dimensionality reduction method PCA on the word
+co-occurrence matrix to build word embe dding. Mikolov et
+al. [32] proposed a neural network based word embedding
+approach named word2vec which learns the word vector
+directly from the training data. Word2vec showed improved
+results in many natural language tasks [32]. Recently, Ye et
+al. [39] adopted word2vec embedding to reduce the lexical
+gap between natural language statements and code snippets.
+They got improved results in bug localization task compared to
+previously explored methods. In our work, we chose word2vec
+word embedding because of its higher accuracy over other
+embedding approaches.
+Word2Vec Embedding. Mikolov et al. [32] used neural
+word embedding to represent word vectors. Word2vec trains
+words against other words that neighbor them in an input
+corpus. Continuous bag of words (CBOW) and Skip-gram are
+well-known techniques to achieve such training. CBOW usesTABLE I: Sample search results showing different aspects of SAPS
+Project Description Language Observations
+Example 1 Query tesseract Tesseract Open Source OCR Engine C++ Both are image recognition apps,
+though not a single word is common
+Result pastec Image recognition open source index and search engine C++ between their descriptions.
+Example 2 Query CarLocator Android app for locating your parked car Java-Android
+(Category: tools)
+Both the projects measure distances
+from a saved location.
+Result DistanceCalculator Small Android app that uses the GPS/Network location
+to measure the distance between two places.
+Java-Android
+(Category: tools)
+Example 3
+Query xbox_one_controller HID-compliant Xbox One Controller driver for OS X C++ All are remote controllers applications
+of different devices. SAPS could detect
+Result1 xwiimote Open Source Nintendo Wii Remote Linux Device them across different languages.
+Driver
+C
+Result2 RemoteDroid App to control your android device from another Android device or a PC over the internet connection
+Java-Android
+(Cetegory: Media
+& Video)
+context to predict target word, while skip-gram uses a word
+to predict target context. The context of a target words can be
+defined as the number of surrounding words (i.e., left of the
+target word or right of the target words) known as windows
+size, which needed to be fixed before train the model. Mikolov
+et al. [32] adopted a neural network architecture (the skipgram model) that consists of an input layer, a projection layer,
+and an output layer to train their model. Training objective of
+Skip-gram model is to learn word vector representation that
+maximizes the log probability of neighboring words. For a
+given a sentence, say image gallery app for android, the model
+tries to learn the probability of context words image, gallery,
+for, and android, given the target word app. In the training
+phase, Skip-gram model tries to maximize these probabilities
+using different documents or sentences from the training corpus.
+The main advantage of using word2vec over other word
+embedding techniques is its speed; Mikolov et al. used
+hierarchical softmax function to make the learning faster
+(see [32] for details). Also, word2vec embedding model is
+totally unsupervised and it can be pre-trained on the any text
+corpus in advance.
+Word Mover Distance (WMD) To calculate similarities
+between two project documents, we use Word Mover’s Distance
+(WMD), a state of the art algorithm to measure document
+similarity [20]. WMD measures the dissimilarity between two
+documents as the minimum amount of distance needs to be
+covered by the embedded words of one document to reach
+the embedded words of another document. WMD leveraged
+word2vec embedding to get the vector of each word in a
+sentence.
+As word2vec captures the contextual similarities of the words,
+Mikolov et al. demonstrated that semantic relationships are often preserved in operations on word vectors, e.g.,, vec(Berlin)
+- vec(Germany) + vec(F rance) is close to vec(P aris).
+WMD leverages such semantic similarities between words.
+For example, say the descriptions of two projects are “image
+gallery app for Lollipop” and “Android photo viewer”. They
+are very close in meaning but have no shared words. Thus,
+traditional similarity measures like bag of words (BOW) or term
+frequency-inverse document frequency (TFIDF) could not find
+any similarity between these two documents. In contrast, WMD
+can efficiently judge they are highly similar since they have very
+similar word embeddings. WMD becomes very effective in our
+case, as different developers may have a different understanding
+about their projects and describe them in their own ways. It is
+highly possible for a developer to express similar functionality
+in different words or sentences with different length. WMD
+helps us to detect similar documents even if the documents
+contain no identical words.
+Fig. 1: Illustrating Word Mover’s Distance (adapted from [20]).
+First, all non-stop words (bold) of document1 and document2 are
+embedded into a word2vec space. Next, the distance between the
+two documents is measured by computing minimum cumulative
+distance that all the words of document1 need to travel to match
+document2. The arrow shows the flow between two words and
+their label indicates the distance. Here the total distance between
+the document is 0.75.
+Calculate document similarity with WMD. To calculate the
+travel distance between two documents, WMD first represents
+each document as weighted point cloud of embedded words,
+as shown in 1. WMD then incorporates the distance between
+individual word pairs into the document distance metric [20].
+This takes place in three main steps:
+(i) Normalized bag-of-words (nBOW) representation. WMD
+represents the text documents as normalized bag-of-words
+(nBOW) vector , t 2 Rn, for a finite set of vocabulary of n. If
+word i appears ci times in the document the representation be
+ti = Pn jc =1 i cj . The resultant nBOW vector is a sparse vector,
+since most of the words in the vocabulary is not present in the
+studied document.
+(ii) Word travel cost. This step computes semantic similarity
+between two word pairs (e.g., “photo” and “image”), by
+calculating their Euclidean distance in word2vec embedding
+space, as shown in Figure 1. For a word2vec embedding matrix
+X 2 IRd×n, if xi 2 Rd represents embedding of ith word in
+d-dimensional space, the Euclidean distance between ith and
+jth words is c(i; j) = jjxi - xjjj2.(iii) Document distance. Travel cost between two words is
+used to calculate distance between two documents. Let t and
+t0 be nBOW representation of two documents in the word2vec
+space. Each word i in t can travel to any words in t0, completely
+or partially. For example, in Figure 1, the words marked in
+orange completely travel to the words in blue. Let T 2 Rn×n be
+a sparse flow matrix where Tij = 0 denotes how much of i can
+travel to word j in t0. Then the minimum cumulative travel cost
+from t to t0 is computed by the optimization of linear program:
+min Pn i;j=1 Tijc(i;j), subject to the constraints Pj Tij = ti
+and Pi Tij = t0 j, i.e. total outgoing and incoming flow of
+words i and j are equal to their normalized frequencies.
+In Figure 1 illustrates the process of WMD calculation. The
+minimum cumulative cost between document1 and document2
+is computed as 0:75.
+III. METHODOLOGY
+We now describe the entire work flow of our tool SAPS
+including the projects we studied, how we gathered data, and
+analyzed them.
+TABLE II: Study Subject
+#API #API
+Language #Projects SLOC #Files #Methods #Classes Class Package
+Java 6560 20M 253K 3M 435K 239K 684K
+C 1736 194M 232k 2.4M N/A 8k 20k
+C++ 1539 154M 317k 3M 191k 46k 42k
+Total 9835 368M 802k 8.4M 626k 293k 746k
+A. Study Subjects
+To capture similarities between the projects, we choose
+9; 835 Github projects. These projects are primarily written in
+three languages: Java, C, and C++. First, from GHTorrent 2016
+dump [11], we selected the projects that started independently
+(i.e. not forked from another project); this filtration criterion
+was important since forked projects, by definition, have high
+similarities with their parent and siblings. We also chose the
+projects that still exist in Github (i.e. deleted = 0). Table II
+summarizes our dataset.
+Selecting Java Projects. Part of the Java projects are used in
+the learning phase of our model, especially for fine-tuning the
+model’s parameters. For that, we only used Android projects
+that are available in Github and also have Google play links
+in their descriptions or README contents. The advantage
+of using these projects is that the corresponding Google Play
+link contains category information like Puzzle Game, News
+Magazine, etc. We used an off-the-shelf open source google
+play scrapper [33] to collect the category information for
+each project. In the training phase, we try to maximize the
+category similarities between a search query and the retrieved
+documents. Though category matching is not exactly same as
+project matching, this gives a good approximation, to begin
+with. In total, we retrieved 6; 560 Github Android projects
+along with their Google Play links across 40 project categories.
+Figure 2 summarizes them. We believe this is a unique data set
+curated across two software forges: Github and Google Play
+Store. We made the data publicly available for future research
+(see https://github.com/dSar-UVA/SApS).
+Fig. 2: Number of Android projects per category. In total, there
+are 40 different categories with project count per category varies
+from 1 to 1,154 (18, 60, and 136 are the first, second and third
+quartile respectively). Only the categories with = 18 projects are
+shown in the diagram.
+Selecting C/C++ Projects. For the C/C++, we selected
+top 3; 275 projects after ranking the projects based on their
+popularity, measured in terms of Github stars. This filtration
+criterion has been used in prior Github studies to select
+meaningful projects [35]. In the resultant dataset, project
+popularity varies from a minimum of 69 stars to a maximum
+of 19; 165, with a median value of 156.
+Fig. 3: SAPS’s workflow
+B. SAPS Workflow
+The basic requirement for any search engine is to have a
+search query (Q) and a set of documents (D) on which the
+query operates. In our case, both Q and D consist several
+project features: project description, README file, method
+and class names, and API package and API class names. SAPS
+created the document set by retrieving the above features from
+all the projects in our study subjects. Next, as user provides a
+project name or a Github project url as a query string, SAPS
+augments the query by adding the above project features. Then
+for a given query SAPS searches for the closest match using
+WMD algorithm and ranks the result based on the minimal
+distance. Figure 3 describes the entire work-flow. It works in
+four main steps:
+Step1. Data Collection. In this step, SAPS downloaded the
+projects from Github. The detailed method and the selection
+criteria are described in above section III-A.
+Step2. Document Preparation. The goal here is to prepare
+documents for the search query. This step consists of three
+sub-parts. (i) Feature Extraction. First, for each project, weextracted the project features. A project consists of source
+code (e.g., method, class, and APIs) and metadata (e.g.,
+project description and README); all these information play
+important role to describe high level functionalities of a project.
+Some of these features are also used by previous research to
+establish project similarities [31], [30], [26] (see Section V for
+details). In particular, we chose the following five features to
+represent each project:
+Description: We retrieved the project description of each
+project from GHTorrent dataset. In particular, we used project
+table of the mySQL database to download the description.
+Readme Content: If selected project contains README.md
+file in GitHub repository then we considered those text as
+our readme content. README usually contains a detailed
+description of the project including how to install and run it.
+Method & Class name: Developers use meaningful identifier
+names to implement project [1]. Thus, it might be possible
+that projects with similar functionalities use similar method
+or class names. To check this hypothesis, we retrieved
+method and class names that are declared within a project.
+For Java projects, we used Eclipse JDT framework [9] to
+collect these information. In particular, we overrode the
+default ASTVisitor for visiting TypeDeclaration for
+class nodes and MethodDeclaration for method nodes
+and retrieved their SimpleNames using getName call. For
+C/C++ projects, we implemented an AST analyzer based on
+Clang tool [6], the C/C++ front-end for LLVM compiler. In
+particular, we extracted Method (including Member Function and Non-Member Function) and Class names based on
+LibTooling[25] and LibASTMatchers[24].
+Similar projects often use similar APIs [30]. This motivates
+us to select APIs in our feature set. In particular, we used API
+package names and class names for this purpose.
+API package name: In Java, the API package names
+are in general included using package and import statement;
+the corresponding AST nodes in Eclipse JDT framework
+are PackageDeclaration and ImportDeclaration
+respectively. We overrode the default AST visitors for such
+nodes to collect the package names, as described above.
+In C/C++ projects, the API package names are indicated
+in all the valid include directives in a project. We used
+clang::PPCallbacks and clang::Preprocessor
+classes to get all the include directives from a project and
+extract the package information (header files). Moreover, we
+removed the packages or headers that are defined within the
+scope of a project. The remainings are considered as API
+packages.
+API class name: The API Class refers to the classes defined
+in system libraries or other third-party libraries or packages.
+To collect the API Class information, we first extracted all
+the classes used in a project and then removed the classes
+defined in the project from this list. The remaining class names
+are considered as API class names. We implemented it using
+Eclipse JDT and Clang AST analyzer for Java and C/C++
+projects respectively. First, we gathered types of each declared
+variables. Then we filtered out the language inbuilt types like
+int, float, string, etc. and the classes defined in a project.
+(ii) Data Preprocessing. Next, for each feature, we used
+standard natural language processing (NLP) techniques for
+data processing like tokenization, normalization, stemming,
+and stopword removal. Along with standard English stopwords,
+we also removed language ans system specific keywords like
+Java, C, C++, and Android.
+(iii) Document Generation. Finally, for each feature, we
+ranked its words using tf -idf weight, which is often used in
+information retrieval and text mining to measure how important
+a word is to a document in a corpus. We calculated term
+frequency (tf) using equations tf(t;d) = 1 + log f(t;d) for
+f(t,d) > 0 and 0 otherwise, where t is the term in a feature
+document d and f(t,d) is the frequency of term t in d. We
+calculated inverse-document frequency as idf(t) = 1+log dfN (t) ,
+where N is the total number of documents and df(t) is the
+document frequency of term t. To mitigate the impact of
+document length and the repetitive tokens in that document,
+we used sub-linear tf-scaling to calculate term frequency,
+Intuitively, tf(t;d) represents how frequent or important
+a term is in a document and idf(t) represents how rare the
+term is in the whole corpus. So, combining these two weights,
+tf - idf(t;d) = tf(t;d) * idf(t), we got the final tf - idf
+weight. The higher the tf - idf value of a term is in a feature
+document, the higher its importance is in that document. Thus,
+we sort tokens in a document in descending order of their
+tf - idf values. Next, we took top N important tokens from a
+feature document to be included in the final model for similarity
+computation.
+Step3. Search Interface. Once the document is prepared,
+SAPS is ready to support any search query. To search for a
+similar project, currently, a user can search with a project name
+or its Github URL. SAPS first searches in its dataset to look
+for the queried project; if it does not find any such project,
+it immediately returns with no information. Otherwise, SAPS
+augments the query with its feature values as described in the
+previous step. We call such augmented query string as Q. Once
+Q is prepared, SAPS considered rest of the projects (i.e. its
+prepared feature documents) as the search documents (D) and
+start operating on them. In the final search results, SAPS gives
+the user a list of projects sorting according to their relevance
+(most relevant project at the top and least relevant project at
+the bottom).
+Step4. Result Generation. This step involves two primary
+parts. (i) Document similarity computation (WMD). For each
+query and document pair, SAPS computes its distance for individual feature (i.e. top N tokens from a feature) separately, using
+WMD algorithm, as described in Section II. We pre-trained
+the Word2Vec model, which used by WMD for similarity
+comparison, on a collection of 7:5M project descriptions from
+GitHub. We used GHTorrent to get those project descriptions.
+We also collected English Wikipedia dump [38] which contains
+3.7M articles. We can used this pre-trained Word2Vec model for
+any new query similarity calculation. As no further Word2Vectraining needed to operate on any new query project, SAPS
+can generate the results with significant efficiency.
+(ii) Search Result. In this step we used two different models
+to rank the documents for a given query.
+Individual Feature Model. The individual model works on
+a single feature of the projects’ document and computes the
+similarity between two documents using WMD model with
+Word2Vec word embedding. For each feature, we need to select
+a token threshold(N) as retrieved from Step2. We tried different
+N cutoff and tuned our model to get optimal parameter settings.
+Given a query project, we calculated distances of all candidate
+projects from the query project. Thus we sorted the candidate
+projects in term of their distance values with minimum distance
+values candidate projects at the top.
+SAPS Combined Model. Given a query (q) and a candidate
+document (d), we calculated the similarity using five individual
+WMD models. While collecting these distance values generated
+by individual models, we considered their optimal token
+threshold. From these five models, we got five different
+distance values between query and document. Then we linearly
+combined those values using equation 1 to get final distance
+value that represents how similar the query is with the document.
+Thus, we calculated the similarity of all candidate documents
+with the query document and sort the candidate document in
+ascending order of the distance value.
+D(q; d) = ?desDdes(q; d)+?rmDrm(q; d)+?mcDmc(q; d)
++ ?apDap(q; d) + ?acDac(q; d) (1)
+where Ddes, Drm, Dmc, Dap and Dap are the distances
+between query q and document d using SAP Sdes, SAP Srm,
+SAP Smc, SAP Sap, SAP Sac respectively.
+We empirically choose these ? values to get optimal
+performance of the SAPS. For each ? we picked values from
+0 to 1 in the interval of 0:1 and experimented over different
+combinations. SAPS performed best at ?des = 0:4, ?rm = 0:4,
+?mc = 0:1, ?ac = 0:1, ?ap = 0:1
+IV. EVALUATION
+In this section, we discuss our evaluation in details. We first
+elaborate our study design followed by evaluation metric, and
+finally the results.
+A. Study Design
+In general, search engines are evaluated using user study [27].
+However, while we were in the early phase of our tool
+development, it was important to tune the parameters (e.g.,
+choosing the optimal ? values while combining document
+distances from multiple features as shown in Equation 1). It
+was difficult to scale the process with user study at every stage.
+To overcome that, we performed the tool evaluation in two
+phases:
+(i) Automated Evaluation. From Github, we selected 6;560
+Android projects (written primarily in Java) that are also
+available in Google Android play store and retrieved the project
+category information from the corresponding play store link.
+Figure 2 summarizes the project categories in our dataset. We
+leverage these category information to evaluate SAPS in the
+automated mode. For a query project of category c, we evaluate
+how efficiently SAPS retrieves projects with the same category
+c. Since categories are annotated by app developers, we assume
+that they are reasonably accurate. Thus, we expect projects
+with similar functionalities should belong to same category
+(see Example2 of table I), though the reverse is not always true.
+Thus, finding project in same category is only an approximation
+of finding similar project, however it is really useful for initial
+sanity check and tuning the parameters.
+We have 40 different categories and the number of projects
+varies across the different categories (details in figure 2). If
+we choose query from a category with few candidate projects,
+say 2 or 3, it would negatively impact the search performance
+as there might not be enough relevant results exist in the
+document. To deal with this scenario we randomly choose
+50 query projects from a pool of projects having category
+frequency = 18 (first quartile). We used this query set to for
+all of our automatic evaluation.
+(ii) User Evaluation. We asked the human evaluator to
+evaluate the performance of different models. We gave the users
+the query projects and the top 10 ranked results generated by a
+model. We provided the user with a project’s name, description,
+and associated GitHub URL for both the query and resulting
+projects. We asked the user to give a relevance score on a scale
+of 0 to 5 (where 0 means non-relevant, and 5 means most
+relevant) for each of the retrieved results considering functional
+similarities between query projects and corresponding retrieved
+projects. We instructed the user to go each project GitHub URL
+and look into project’s readme file, source code, etc. in addition
+to looking at project name and description. We also asked
+the user to give a partial score if two projects are partially
+similar. We did two rounds of evaluation for two different
+dataset. In the first round, we provided the five users (CS
+Professionals(2) and CS Grad Students(3)) with 10 projects
+query for each user from a pool of 5600 Java projects and
+collected the relevance judgment score (0 to 5) for SAPS and
+CLAN. In the second round of evaluation, we selected 25
+queries from multiple languages (Java, C, and C++) from a
+pool of 9835 projects and gathered relevance judgment score
+from 12 users ( CS Professionals(3), non-CS Professional(1),
+and CS Grad Students(8)) for only SAPS. As CLAN is not
+applicable for any other language except Java, we did not
+calculate the results using CLAN in this dataset. As MAP and
+P recision need binary relevant judgment, we choose relevance
+score 3 or more as relevant and all others as irrelevant for the
+users’ evaluation score. In both the rounds, we took average
+results across all the users and reported that average values as
+our final evaluation results.
+We further evaluated SAPS using state-of-the-art general
+purpose project search engine CLAN [30]. CLAN compares
+APIs (packages and classes) of the Java projects using LSI
+based distance calculation algorithm to establish similarities.
+Since CLAN’s source code was not available, we re-implement
+CLAN adhering to the paper details. CLAN only used JDKAPIs to compare the projects. Since our study subjects are
+Android projects, only using JDK APIs would give a poor
+performance for CLAN. Thus, we consider the Android APIs
+as well to evaluate CLAN. In fact, both SAPS can CLAN use
+the same API data so that we can compare them on fair ground.
+Since CLAN works only on Java projects, we restricted this
+comparison only to evaluate the Android-Java data set. We
+compared CLAN using both automated and user evaluation.
+Note that, there exist some advanced project search engine
+like CLANdroid [26] especially designed to search similar
+Android projects. We purposefully did not compare them with
+SAPS because they use some Android related features like
+sensor, permission information etc. Since these features are not
+common for general purpose software while SAPS is designed
+for general purpose project search, we could not evaluate our
+model against them.
+B. Evaluation Metric
+If SAPS retrieves projects similar to the queried project
+(based on either category or user evaluation), we considered
+that as hit. Two important criteria for evaluating a search
+engine are effectiveness and usefulness of the search results.
+Effectiveness measures the ability of a search engine to find
+the right information, and usefulness measures how useful this
+information is to the users. To measure effectiveness, we used
+Precision and Mean Average Precision (MAP) as our evaluation
+metrics. To measure usefulness of the returned results to a user
+we used Normalized Discounted Cumulative Gain (NDCG)
+as the evaluation metric. Among those evaluation metrics,
+Precision and MAP evaluate the results on a binary scale (i.e.
+match or not match), while NDCG checks how similar a search
+result is w.r.t. a given query at a scale of 0 to y (we set y = 5).
+Precision also ignores the ranking position of the search results,
+as opposed to MAP and NDCG. Thus, precision is the least
+rigorous metric followed by MAP and NDCG. We reported our
+evaluation results, MAP @x, P recision@x, and NDCG@x,
+based on top x returned documents. We set commonly used
+value of x = 1, 3, 5 10 for MAP and P recision metrics and
+x= 5, 10 for NDCG metric.
+1) Precision
+Suppose, SAPS retrieves D projects for a query q. A perfect
+tool could list all the projects in D as similar projects. However,
+in practice, SAPS will only retrieve S of them correctly. In this
+case, we define the precision as: The percentage of projects
+correctly retrieved by SAPS over the total number of retrieved
+projects for a given query, i.e. jSj
+jDj.
+2) Mean Average Precision (MAP)
+For a set of queries, MAP is the mean of the average
+precision of individual query [29]. First, for each query,
+an average precision is computed for each rank. Given a
+query(q) and it’s ranking documents, average precision of q
+is calculated as AvgP rec(q) = (PR i=1 rank i i )=R, where R is
+the total number of relevant documents, ranki is a ranking
+position of the relevant document i in the retrieved ranking
+and i=ranki = 0 if relevant document i was not retrieved by
+the model. This is repeated across all the query ranks. Then we
+take the mean of this average precision across all the queries
+using equation MAP (Q) = jQ 1j Pj jQ =1 j AvgP rec(qj) to get
+MAP. Here, Q is the entire query set.
+3) Normalized Discounted Cumulative Gain (NDCG)
+This is another popular metric for evaluating web search
+and related tasks emphasizing on retrieving highly relevant
+documents [29]. Often highly relevant documents are more
+useful than marginally relevant document. The lower the ranked
+position of a relevant document, the less useful it is to the
+user, since it is less likely to be examined. NDCG uses graded
+relevance as a measure of usefulness (i.e. gain) of examining
+a document. Instead of binary judgment, relevant or irrelevant,
+judgment can be considered as a score on a scale of [0; r]
+where r > 2. Score 0 means irrelevant and different values of
+r indicate the level of relevancy; the higher the value is, the
+more relevant that document is. Gain is accumulated starting
+at the top of the ranking and may be reduced, or discounted, at
+lower ranks. We used commonly used discount 1= log(rank)
+with base 2. For example, the discount at rank 4 is 1=2, and
+at rank 8 it is 1=3.
+Let, the ratings of the n documents be r1; r2; : : : rn (in
+ranked order) then the cumulative gain (CG) at rank n is CG =
+r1+r2+::+rn . So, Discounted Cumulative Gain (DCG) at rank
+n be DCG = r1 + r2= log2 2 + r3= log2 3 + : : : + rn= log2 n.
+DCG
+p is the total gain accumulated at a particular rank p:
+DCG
+p = r1 + Pp i=2 log ri 2 i
+Let, IDCGp be the maximum possible DCG (ground truth)
+for a given set of queries, documents, and relevance score. Normalized cumulative gain is calculated as NDCGp = IDCG DCGp
+p
+.
+In our evaluation, we considered the sorted (decreasingly)
+feedback by our users as our ground truth.
+C. Results
+To build SAPS, we experimented with five different project
+features. Thus, we begin our evaluation with following research
+question:
+RQ1. How different features impact SAPS’s performance?
+top N = 80
+0.10
+0.15
+0.20
+0.25
+0.30
+0.35
+25 50 75 100
+top N
+MAP values
+MAP_at
+135
+10
+Fig. 4: Variation of MAP values with token threshold for readme
+feature (SAPSrm).
+Similarly, we conducted experiments on other feature models
+and got top N values for optimal individual model performance.
+The results are summarized in Table III. For all the models,
+we chose MAP @10 metric to select optimal token threshold.The thresholds at other MAPs are mostly similar (within +/- 5
+error range). Thus, we finalized token thresholds for SAPSdes,
+SAPSrm, SAPSmc, SAPSac, and SAPSap at 10, 80, 80, 25,
+and 100 values.
+TABLE III: Illustrates token threshold for individual feature based
+models. It also shows the best performing individual model at
+different accuracy; peak accuracy is marked in Red.
+Model Token MAP Precision
+Threshold @1 @3 @5 @10 @1 @3 @5 @10
+SAPSdes 10 0.06 0.05 0.05 0.03 0.06 0.07 0.1 0.10
+SAPSrm 80 0.34 0.18 0.16 0.12 0.34 0.22 0.21 0.18
+SAPSmc 80 0.22 0.19 0.15 0.13 0.22 0.24 0.20 0.20
+SAPSac 25 0.28 0.17 0.15 0.11 0.28 0.21 0.20 0.18
+SAPS
+ap 100 0.08 0.08 0.08 0.06 0.08 0.1 0.12 0.12
+Fig. 5: Significance of individual feature on SAPS’s result vs. the
+combined SAPS performance at different MAP. The MAP values
+of the best features are highlighted in Red
+Once we finalize the token threshold, we checked which individual model performs best in different accuracy (see Table III
+and Figure 5). Readme based model SAPSrm performed best
+at MAP @1. For all the other MAPs SAPSrm, SAPSmc, and
+SAPSac performed comparably. These observations remain
+same for precision metric as well. This shows that to detect
+functionally similar project, both source code and textual
+feature play important roles.
+Notice that, the default setting of Github search engine only
+uses project name and description[14]. User can optionally
+choose readme files to be included in the search. Surprisingly,
+we found that project descriptions have a limited effect of search
+performance—SAPSdes performed worst than all other models.
+This might be due to the lack of information available in GitHub
+projects’ description. The average length of description in the
+Java projects is =7.5 (after stopword removal), which is rather
+small for document similarity comparison. We also found that
+API package based model SAPSap was not as effective as
+API class based model SAPSac . This might result from the
+fact that Android projects often share same high-level Android
+API packages which might cause unnecessary similar keywords
+among functionally different projects.
+Result 1: Both project source code (class, method and
+API class names) and textual feature (readme file) play
+important role in search engine performance. Surprisingly,
+project description was not very effective in our setting.
+Since we have seen in previous RQ, both source code
+and textual features matter in search performance, we built a
+combined model (see III-B), which will be our final version
+of SAPS. In the rest of RQs we evaluate effectiveness and
+usefulness of SAPS in various settings.
+RQ2. How effectively SAPS finds similar projects?
+We evaluate this question using both automated and user
+evaluation. Since precision and MAP metric measure effectiveness of a search engine, to investigate this RQ we choose
+these two metrics.
+(i) Automated evaluation. Figure 5 shows the comparison
+of MAP values of SAPS (combined model) with the feature
+models. The precision metric also shows similar result. The
+combined model performed way better than the other models in all different evaluation metrics. We find the optimal
+performance of the combination model at linear combination
+weight (?) for description and readme at 0:4 and for other three
+features at 0:1. Notice that though project description does not
+perform well as an individual model, in the combined model
+setting, it impacted significantly (36% among five features).
+We further compare SAPS’s results with CLAN[30] and
+Random search model. Given a query, the latter picks the
+projects randomly from the search documents. We conduct
+experiment on randomly selected 50 queries (see IV-A for
+details). Figure 6(a) shows the results. SAPS scores 0:44,
+0:36, 0:29, and 0:21 for MAP @1, @3, @5, @10 respectively.
+For all MAP values SAPS significantly outperforms CLAN
+and Random model. Compare to the Random both models
+performed well. Table IV shows SAPS performs best over
+CLAN at ranking @3 for both MAP and Precision—SAPS
+performs 17 and 19 percentage points better respectively.
+(ii) User evaluation. For first round of evaluation we
+calculated MAP @1, @3, @5, and @10 for both SAPS and
+CLAN. SAPS scores 0:82, 0:77, 0:72, and 0:64 respectively.
+As Figure 6(b) shows, in all the evaluation metrics SAPSJava
+outperformed CLAN significantly. In this case, SAPS performs best over CLAN at rank @10 for both MAP and
+Precision—SAPS performs 16 and 17 percentage points better
+respectively (see Table IV). It is also interesting to see that
+SAPSAll performed comparably well as SAPSJava, though
+it searched projects across different languages. Example 3 of
+Table I shows that SAPS successfully finds remote controller
+software across three different languages. These results indicate
+that SAPS might be easily extended to any number of languages
+effectively.
+Interestingly, while comparing automatic vs. user evaluation
+results (see Figure 6, SAPS’s effectiveness increases for the(a) MAP comparison in automatic evaluation setting. (b) MAP comparison in user evaluation setting.
+Fig. 6: SAPS is more effective than CLAN and random model in both automatic and user evaluation settings. In user evaluation
+settings, both SAPS and CLAN perform better than the automatic setting.
+TABLE IV: Percentage point gain of SAPS over CLAN in
+effectiveness score
+Evaluation Setting MAP Precision
+@1 @3 @5 @10 @1 @3 @5 @10
+Automated 0.14 0.17 0.12 0.07 0.14 0.19 0.11 0.07
+User 0.08 0.13 0.13 0.16 0.08 0.15 0.13 0.17
+latter. This is because in automatic evaluation, we considered a
+strict similarity matching with the project categories. For example, if query project is from category GAME_ACTION : Action
+and the returned project is in category GAME_ADVENTURE :
+Adventure, we considered that as irrelevant result and assigned
+a relevance score of 0. However, user evaluated those two
+projects as similar and gave higher relevance score.
+Result 2: SAPS can effectively finds similar projects
+across multiple languages. SAPS outperforms baseline
+CLAN from 8 to 17 percentage points.
+RQ3. How useful is SAPS’s search results to the users?
+To measure the usefulness for SAPS’s returned search
+results, we used NDCG @5 and @10. We computed NDCG
+for two rounds of user evaluations. Figure 7 shows the
+results for SAPSJava (only Java language projects), SAPSAll
+(multiple languages projects), and CLAN. SAPSJava and
+SAPSAll perform comparably—0:88 and 0:84 for NDCG@5
+and NDCG@10 respectively. The result indicates SAPS can
+be easily generalizable to many languages without hurting the
+performance. SAPSJava performed much better than CLAN in
+both cases with 31 and 26 percentage point gain for NDCG@5
+and NDCG@10. We notice that for some project categories
+such as music and widget, the system performs extremely well.
+However, for some categories like travel, the system barely
+returns relevant results. The poor performance of travel related
+apps might be due to the fact that travel category enlists a
+wide variety of diverse app (e.g., Yelp, Tomtom GPS, Indian
+Railway)[4].
+Higher NDCG values indicate SAPS is extremely useful to
+the users. In fact, one user commented after using our tool: I
+can usually find a relevant app/project in your top 3 results,
+which is impressive. Another user said: The most interesting
+case I found is “clickerfree" under the calculator category. This
+app does not have a highly relevant terms like “calculator",
+but it indeed has the calculation functionality, which may not
+be found by the existing search techniques.
+Result 3: User study shows SAPS is useful and it
+outperforms CLAN by 26 to 31 percentage points.
+Fig. 7: Evaluating effectiveness of SAPS: NDCG comparison on
+User evaluation data.
+D. Discussion
+In addition to outperforming in empirical evaluation results,
+SAPS overcome some limitations of CLAN model in terms
+of effective and efficient searching. In the implementation,
+CLAN uses Latent Semantic Indexing algorithm where a higher
+dimensional term-document frequency matrix maps into a lower
+dimensional space to capture hidden similarity between terms
+and documents. In a big collection of a corpus, this whole
+process will be very time-consuming. All the query projects
+and candidate projects are required beforehand to build their
+LSI model. For the new query projects, which is very common
+in searching CLAN needs to build the whole pipeline again to
+give the ranking results for that query, which is not entirely
+feasible. As there is no way to build CLAN model for the
+query projects set and candidate projects set separately, we
+favoring the CLAN by training it for both the query and the
+candidate projects. On the other hand, SAPS uses word2vec
+word embedding which can be trained on an isolated corpus
+without the interference of the query and candidate projects
+data. In calculating similarity, we pre-built the WMD model
+based on solely training or candidate projects data. This WMDmodel pre-built is linear with the training projects and can be
+done incrementally. That means if a new project arrives we can
+just calculate embedding for that project’s document and add
+that to the existing training projects embedding. We treated
+all the queries for the evaluation query set as new queries and
+calculated the similarity in real-time suing WMD. Our model
+can adopt any new projects in both the query and candidate
+projects set.
+V. RELATED WORK
+Prior work on identifying similar projects generally falls into
+two main categories:
+(1) Code Similarity. Researches used code structure, commonly known as code clone analysis, to establish similarities
+between two projects. For example, Crussellet al. [8], [7]
+propose scalable approaches to detect similar Android apps
+based on semantic code clone detection technique. They
+first remove possible library code from the application code,
+and then comparing program dependence graph (PDG) of
+the applications, they identify partial and whole application
+similarities. In another closely related work, Chen et al. detect
+similar Android applications [5], by comparing centroids
+of the program dependency graphs. Using a fuzzy hashing
+technique on the instruction sequence of Android apps bytecode,
+DroidMOSS identifies similar applications across different
+Android app market, in particular, to identify repackaging [40].
+Juxtapp [12] identifies similar apps using an n-gram based
+technique that works on the apps’ opcodes. All these work were
+designed to detect plagiarized app in the Android marketplace;
+thus, locating cloned code was important for them. In contrast,
+we are interested in conceptual similarities between projects,
+and similar code structure only partially satisfies our needs.
+Moreover, standard clone detection techniques [16], [17], [36]
+do not work across multiple programming languages, while
+our notion of project similarities are beyond such language
+boundary.
+Researchers also considered other code-related features to
+establish project similarities. McMillan et al. [30] argued that
+projects using similar packages or APIs are more likely to
+be similar. They implemented JavaClan, a tool that compared
+JDK API usage across multiple Java projects and identified
+similar applications using Latent Semantic Indexing (LSI), an
+Information Retrieval based technique. Kawaguchi et al. proposed MUDABlue to categorize software automatically based
+on identifier names, using Latent Semantic Analysis (LSA).
+Michail et al. [31] proposed a technique of finding similar
+library applications based on the similar nomenclature of
+method names, class names and code comments. They primarily
+used TF-IDF scores to establish the similarity. All these above
+techniques are complementary to our work. However, none
+of this work used project descriptions or other meta-data like
+readme files, which turns out to be one of the most influential
+factors in our experiments.
+(2) Similarities in Project meta-data. Another line of work
+used other meta-information associated with the projects to
+find similar applications. Thung et al. [37] detected similar
+applications by leveraging collaborative tagging. The empirical
+evaluation showed that they outperformed API based similarity
+detection technique, JavaClan [30]. Shao et al. [10] used a
+two-phase hybrid approach to detecting similar, in particular,
+re-packaged Andro apps. First, using various resources like GUI
+layout they categorized the apps. Next, using structural code
+similarity they locate the re-packaged app. Gorla et al. [10]
+classified the applications based on their descriptions using
+a topic analysis algorithm LDA. Finally, Linares-Vásquez
+et al. [26] identified similar Android applications based on five
+different features: API calls, intents, permissions, sensors, and
+Identifiers. All these works suggest project meta-information
+can also play a critical role in detecting similar conceptual
+applications.
+We look into this further by performing an in-depth analysis
+of the role of each sub-component in determining project
+similarities. As opposed to Linares-Vásquez et al. [26], we
+only chose the components that are not limited to Android: e.g.,
+permissions, sensors, etc. leveraging our findings, we further
+proposed a mixed method to find similar applications. Lastly,
+we consider semantic equivalence of different words using
+word embedding, thus minimizing the effect of word choice
+bias of app developers .
+VI. THREATS TO VALIDITY
+As a threat to construct validity, while linking a Github project
+with Google play store, we assume the available play store
+links are related to the project. This might not be always
+true; sometimes developers put links of other projects for
+advertisement purpose. Usually, in such cases, multiple Google
+play links are available. To minimize this threat, we filtered out
+the projects with multiple links from our dataset. As a threat to
+internal validity, we assumed Google Play category represents
+the functionality of projects and thus compute evaluation results
+in the automatic evaluation setting; this might not be always
+true. To mitigate this threat we further performed extensive
+user study. Finally, the evaluation is based on selected queries;
+thus, may incur some unwanted bias.
+VII. CONCLUSION & FUTURE WORKS
+In this work, we introduce a novel approach (SAPS) to finding
+similar Github projects using word embedding technique. To
+our knowledge, this is the first project search tool that works
+across multiple languages. We empirically establish that SAPS
+is both effective and useful to users in detecting similar
+software.
+In future, we plan to incorporate free-text based project
+search in our model, similar to text search engine. We can
+achieve it by using another layer of search abstraction to find
+closest matches from the project pool which will be then treated
+as SAPS’s query projects. We also plan to extend SAPS to
+automatically categorize Github projects. As we have a vast
+collection of annotated Android project data, a supervised
+machine learning model can be leveraged for this purpose.

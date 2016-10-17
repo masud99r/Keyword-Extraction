@@ -1,0 +1,51 @@
+get histogram
+build min leaf size limited tree
+build
+split
+build
+build alpha limited tree
+run layered training
+regress
+build regressor
+equals
+compare
+build
+build
+build
+get default metric
+create
+select
+build
+get stats
+copy
+build
+parse double array
+create node
+equals
+is sparse
+get metric
+inorder
+create node
+build
+build depth limited tree
+create bootstrap sample
+build
+build num leaf limited tree
+do one pass gaussian
+sign
+is interior node
+sum up
+copy
+create bags
+subtract
+main
+evaluate model
+compare
+main
+backfit
+main
+add
+equals
+compute bins
+copy
+main

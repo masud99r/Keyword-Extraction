@@ -1,0 +1,53 @@
+ladies
+find max lambda gaussian
+multiply
+build gaussian regressors
+get predictor
+do one pass
+copy
+process
+build gaussian regressors
+build
+build binary classifier
+build regressor
+build classifier
+refit gaussian regressor
+build regressor
+do one pass binomial
+divide
+split
+build regressor
+build gaussian regressors
+expand
+copy
+h
+build classifier
+main
+build
+build gaussian regressors
+split
+mean
+refit regressor
+build gaussian regressor
+diagnose
+hash code
+build
+build gaussian regressors
+dot product
+eval
+build regressor
+build gaussian regressors
+build gaussian regressors
+create cubic spline design matrix
+build binary classifier
+build binary classifiers
+build gaussian regressors
+process fields
+build gaussian regressors
+set value
+build regressor
+refit gaussian regressor
+build gaussian regressor
+max
+copy
+build gaussian regressor

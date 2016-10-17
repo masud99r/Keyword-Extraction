@@ -1,0 +1,170 @@
+Md Masudur Rahman
+Contact
+Information
+Department of Computer Science +1 434 466 7304
+University of Virginia masud@virginia.edu
+Charlottesville, VA - 22904, USA
+Research
+Interests
+My research interest focuses on applying Natural Language Processing,
+Machine Learning, and Information Retrieval techniques on large scale
+software repositories to analyze and automate software engineering systems.
+• Software Engineering: Code Search, Mining Large Scale Software
+Repository, Automatic Bug detection and Repair
+• Natural Language Processing
+• Machine Learning
+• Information Retrieval
+• Big Data
+Education University of Virginia, Charlottesville, VA, USA
+Ph.D., Computer Science, Expected: 2021
+Bangladesh University of Engineering and Technology (BUET),
+Dhaka, Bangladesh
+B.Sc., Computer Science and Engineering, February 2013
+• Major: Theoretical Computer Science
+Publications
+• Md Masudur Rahman. Finding Similar Projects in GitHub using
+Word2Vec and WMD. Workshop on the Naturalness of Software
+(NL+SE 2016) at FSE 2016. (to appear)
+• Wasi Ahmad, Md Masudur Rahman and Hongning Wang. Topic
+Model based Privacy Protection in Personalized Web Search. The
+39th International ACM SIGIR Conference on Research and Development
+in Information Retrieval (SIGIR2016), p1025-1028, 2016. (PDF)
+1 of 5Research
+Experience
+Graduate Research Assistant Summer 2016 - current
+Supervisor: Baishakhi Ray
+Research Project
+• Finding Similar Projects in GitHub using Word Embedding
+Leveraged Word2Vec word embedding and Word Mover Distance (WMD)
+to measure the similarity of GitHub projects utilizing projects’ source
+code and available textual description.
+• Privacy in Information Retrieval
+Proposed a client-centered approach to hide user intents that prevent
+search engine from building user profile by injecting cover queries with
+the original user issued query in a controlled way. Each user’s query
+is submitted with a set of cover queries which carry similar amount of
+information to generalize user profile while still having some personalization
+• Sentiment analysis from social media data
+Used text processing techniques to generate features and supervised
+learning techniques to detect insulting vs non-insulting comments from
+the text
+Undergraduate Thesis
+• Future Computing and Quantum Computer
+In this thesis, we attempted to find a polynomial time solution of NPcomplete problems using alternate approaches to classical computers
+and by bypassing the impasse of NP-completeness.In this thesis, we
+explored in details two basic quantum algorithms- Deutsch and DeutschJozsa and proposed a 2-qubit modification of Deutsch and DeutschJozsa quantum algorithm. We discussed a particular type of solution
+and proposed a different type of analog computer which uses the soapfilm property to solve Steiner Tree problem, which is a NP-complete
+problem, in polynomial time.
+Supervisor: Dr. Masud Hasan
+Awards Student Awards
+• SIGIR Student Travel Grant to attend SIGIR 2016 Conference at Pisa,
+Italy July 2016
+• PhD Scholarship, Department of Computer Science, University of Virginia,
+USA August 2015
+• Enrolled in Dean List for academic excellence in B.Sc for three academic
+years from BUET, Dhaka, Bangladesh 2008 - 2013
+2 of 5• Department Scholarship for all eight terms for outstanding result in
+B.Sc. from BUET, Dhaka, Bangladesh 2008 - 2013
+• Education Board Scholarship, H.S.C 2007
+• Education Board Scholarship, S.S.C 2005
+Teaching
+Experience
+Graduate Teaching Assistant Fall 2015 - current
+Department of Computer Science, University of Virginia
+• Software Engineering (CS 6501)
+Instructor: Baishakhi Ray
+• Data Science Software Engineering (CS 6501)
+Instructor: Baishakhi Ray
+• Computer Architecture (CS 3330)
+Instructor: Luther Tychonievich
+• Theory of Computation (CS 3102)
+Instructor: Worthy Martin
+Instructor Spring 2013 to Summer 2015
+Department of Computer Science and Engineering, BRAC University
+• Data Structure (CSE220)
+• Artificial Intelligence (CSE 422)
+• Algorithms Lab (CSE 221)
+• Computer Networks Lab (CSE 421)
+• Programming Language I -Java (CSE 110)
+• Programming Language II - Java (CSE 111)
+• Digital Logic Design (CSE260)
+• Introduction to Computer Science (CSE101)
+Work
+Experience • Lecturer February 2013 - August 2015
+Department of Computer Science and Engineering
+Brac University, Dhaka, Bangladesh
+Professional
+Affiliations • Consultant 2013 - 2015
+Softwind Tech Ltd, Dhaka, Bangladesh
+Worked with Interactive Marketing Team, Mobile Apps Team, Website
+Team and Facebook Marketing Team.
+3 of 5Technical
+Skills • Programming Language
+Java, C/C++, Python, C#, Assembly Language, MySQL, SQL, PLSQL
+• Scripting Language
+PHP, Actionscript 3, Javascript
+• Algorithm, Package and Library
+• Apache Lucene
+• Topic Modeling -LDA-C, Mallet
+• Wordnet Ontology
+• Open Directory Project - ODP - DMOZ Ontology
+• Vector Space Model
+• Language Model
+• Word Embedding: Word2Vec
+• Other Technical Skills
+• HTML, MySQL, JavaScript, AJAX, CSS, JQuery,
+• CodeIgniter, Wordpress, CMS, UML
+• Knowledge in Technical Writing, LaTeX
+• Knowledge in Design Pattern
+• Working experience in Linux OS environment
+• Working experience in OpenGL(Graphics) with C++
+Academic
+Projects
+Web based Projects
+• Online Hall Management (As a term project in Level 3 Term 2)
+Tools: PHP with CodeIgniter Framework, MySQL Database. (use
+MVC, Design Pattern
+Web site design and automation of LAB
+• Automation of Hall Management System(As a term project in
+Level 3 Term 1)
+Tools: ASP.NET, C#, Oracle Database
+Automation of existing manual hall management system
+• Digital Lab Management(As a project in Project Show)
+Tools: PHP with CodeIgniter Framework, MySQL Database (use MVC,
+Design Pattern)
+Web site design and automation of LAB
+Software and Network based Projects
+• Router Implementation(As an assignment in Networking Sessional)
+Tools: Java (Network Layer implementation of Networking)
+4 of 5• Data Link Layer Implementation(As an assignment in Networking
+Sessional)
+Tools: Java (DLL Layer implementation of Networking)
+• LAN Messenger(As an assignment in Networking Sessional) Tools:
+Java (Communication between different LAN connected PCs via message
+passing)
+• NetScan (As a term project in Level 2 Term 1) Tools: Java, Netbean
+IDE
+Basic functionality is to manage file sharing between different computers
+connected to LAN. Used for accessing shared documents from other pc
+via LAN
+• Digital Diary (As a term project in Level 1 Term 2) Tools: C,
+iGraphics Environment (A customized Graphic library in OpenGL C/C++)
+Its functionality is similar to To Do List application in Windows
+Hardware Projects
+• Blind’s Eye: Hardware implementation of Blind’s Eye using Sonar
+Sensor to calculate distances between blind people and obstacles and
+speaks out the distance through speaker and blind people get the idea
+while walking.
+• Design and implementation of a 4 bit computer (As a Digital
+System Design project in Level 4 Term 1) Supporting 29 instructions
+and 2 stage pipelining
+Online
+Profile
+Personal Website: http:mmasud.me
+LinkedIn: https://www.linkedin.com/in/masud99r
+References Baishakhi Ray
+Assistant Professor
+University of Virginia
+Email: rayb@virginia.edu
+Phone: (434) 982-2212
+Fax: (434) 982-2214
